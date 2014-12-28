@@ -264,10 +264,10 @@ public class ConfigurationManager {
 		
 		config.put(RANDOM_GENERATOR, evolConf.getRandomGen());
 		config.put(NATURAL_SELECTOR, evolConf.getNaturalSel());
-		config.put(EXECUTE_GO_BEFORE_NS,"" + evolConf.isExecuteNaturalBefore());
+		config.put(EXECUTE_GO_BEFORE_NS,"" + evolConf.getExecuteNaturalBefore());
 		config.put(MIN_POP_SIZE_PERCENT,"" + evolConf.getMinPopSizePercent());
 		config.put(SELECT_FROM_PREVIOUS_GEN,"" + evolConf.getSelectFromPrevGen());
-		config.put(KEEP_POP_SIZE_CONSTANT,"" + evolConf.isKeepPopSizeConstant());
+		config.put(KEEP_POP_SIZE_CONSTANT,"" + evolConf.getKeepPopSizeConstant());
 		config.put(CROSSOVER, "" +evolConf.getCrossoverRate());
 		config.put(MUTATION, "" + evolConf.getMutationRate());
 		config.put(POP_SIZE, "" + evolConf.getPopulationSize());

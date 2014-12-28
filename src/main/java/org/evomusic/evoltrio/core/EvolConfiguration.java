@@ -18,20 +18,6 @@ package org.evomusic.evoltrio.core;
 
 import org.evomusic.evoltrio.fitness.SoloFitnessEvol;
 import org.jgap.Configuration;
-import org.jgap.DefaultFitnessEvaluator;
-import org.jgap.InvalidConfigurationException;
-import org.jgap.event.EventManager;
-import org.jgap.impl.BestChromosomesSelector;
-import org.jgap.impl.CauchyRandomGenerator;
-import org.jgap.impl.ChromosomePool;
-import org.jgap.impl.CrossoverOperator;
-import org.jgap.impl.GABreeder;
-import org.jgap.impl.GaussianRandomGenerator;
-import org.jgap.impl.MutationOperator;
-import org.jgap.impl.StockRandomGenerator;
-import org.jgap.impl.ThresholdSelector;
-import org.jgap.impl.TournamentSelector;
-import org.jgap.impl.WeightedRouletteSelector;
 
 /**
  * 
@@ -44,25 +30,52 @@ public class EvolConfiguration {
 
 	public static final int DEFAULT_POP_SIZE = 30;
 
-//	public static final String[] NATURALSELECTORS = { "best", "threshold",
-//			"tournament", "weighted" };
-	public static final String[] NATURALSELECTORS = { "best", "threshold",
-		"tournament" };
-
-	public static final String[] RANDOMGENERATORS = { "stock", "cauchy",
-			"gaussian" };
-
+	@Pref(name="Random Generator", help="The random generator to use", type=PrefType.COMBO)
+	@ComboPref(allowedValues={"stock", "cauchy", "gaussian", "weighted"}, resolver=RandomGeneratorResolver.class)
 	private String randomGen = "stock";
+	public String getRandomGen() { return randomGen; }
+    public void setRandomGen(String randomGen) { this.randomGen = randomGen; }
+
+    @Pref(name="Natural Selector", help="The natural selector to use", type=PrefType.COMBO)
+	@ComboPref(allowedValues={"best", "threshold", "tournament"}, resolver=NaturalSelectorResolver.class)
 	private String naturalSel = "best";
+	public String getNaturalSel() { return naturalSel; }
+    public void setNaturalSel(String naturalSel) { this.naturalSel = naturalSel; }
+
 	// TODO change this with allow doublette
+
+    @Pref(name="Execture Natural Selectors Before Genetic Operators", type=PrefType.BOOLEAN)
 	private boolean executeNaturalBefore = false;
+	public boolean getExecuteNaturalBefore() { return executeNaturalBefore; }
+    public void setExecuteNaturalBefore(boolean executeNaturalBefore) { this.executeNaturalBefore = executeNaturalBefore; }
+
+    @Pref(name="Minimum Population Size Percent", help="Minimum size guaranteed for population", type=PrefType.PERCENTAGE)
 	private int minPopSizePercent = 0;
+	public int getMinPopSizePercent() { return minPopSizePercent; }
+    public void setMinPopSizePercent(int minPopSizePercent) { this.minPopSizePercent = minPopSizePercent; }
+
+    @Pref(name="Select From Previous Generation", help="The percent of the chromsomes to select from the previous geneartion",
+	        type=PrefType.PERCENTAGE)
 	private double selectFromPrevGen = 1.0d;
+	public double getSelectFromPrevGen() { return selectFromPrevGen; }
+    public void setSelectFromPrevGen(double selectFromPrevGen) { this.selectFromPrevGen = selectFromPrevGen; }
+
+    @Pref(name="Keep Population Size Constant", type=PrefType.BOOLEAN)
 	private boolean keepPopSizeConstant = false;
-	private double crossoverRate = 0.65d;
-	private int mutationRate = 42;
-	
-	private int iterations = 100;
+	public boolean getKeepPopSizeConstant() { return keepPopSizeConstant; }
+    public void setKeepPopSizeConstant(boolean keepPopSizeConstant) { this.keepPopSizeConstant = keepPopSizeConstant; }
+
+    @Pref(name="Crossover Rate", type=PrefType.PERCENTAGE)
+	private Double crossoverRate = 0.65d;
+	public Double getCrossoverRate() { return crossoverRate; }
+    public void setCrossoverRate(Double crossoverRate) { this.crossoverRate = crossoverRate; }
+
+    @Pref(name="Mutation Rate", type=PrefType.PERCENTAGE)
+	private Integer mutationRate = 42;
+	public Integer getMutationRate() { return mutationRate; }
+    public void setMutationRate(Integer mutationRate) { this.mutationRate = mutationRate; }
+
+    private int iterations = 100;
 
 	private SoloFitnessEvol soloFitnessEvol;
 
@@ -93,145 +106,6 @@ public class EvolConfiguration {
 	}
 
 	/**
-	 * @return the randomGen
-	 */
-	public String getRandomGen() {
-		return randomGen;
-	}
-
-	// TODO use ENUMs or smt
-	public String getRandomGen(int index) {
-		return RANDOMGENERATORS[index];
-	}
-
-	public int getRandomGen(String name) {
-		for (int i = 0; i < RANDOMGENERATORS.length; i++) {
-			if (RANDOMGENERATORS[i].equalsIgnoreCase(name))
-				return i;
-		}
-
-		return -1;
-	}
-
-	/**
-	 * @param randomGen
-	 *            the randomGen to set
-	 */
-	public void setRandomGen(String randomGen) {
-		this.randomGen = randomGen;
-	}
-	
-	public String getNaturalSel(int index) {
-		return NATURALSELECTORS[index];
-	}
-
-	public int getNaturalSel(String name) {
-		for (int i = 0; i < NATURALSELECTORS.length; i++) {
-			if (NATURALSELECTORS[i].equalsIgnoreCase(name))
-				return i;
-		}
-
-		return -1;
-	}
-
-	/**
-	 * @return the naturalSel
-	 */
-	public String getNaturalSel() {
-		return naturalSel;
-	}
-
-	/**
-	 * @param naturalSel
-	 *            the naturalSel to set
-	 */
-	public void setNaturalSel(String naturalSel) {
-		this.naturalSel = naturalSel.trim();
-	}
-
-	/**
-	 * @return the executeNaturalBefore
-	 */
-	public boolean isExecuteNaturalBefore() {
-		return executeNaturalBefore;
-	}
-
-	/**
-	 * @param executeNaturalBefore
-	 *            the executeNaturalBefore to set
-	 */
-	public void setExecuteNaturalBefore(boolean executeNaturalBefore) {
-		this.executeNaturalBefore = executeNaturalBefore;
-	}
-
-	/**
-	 * @return the minPopSizePercent
-	 */
-	public int getMinPopSizePercent() {
-		return minPopSizePercent;
-	}
-
-	/**
-	 * @param minPopSizePercent
-	 *            the minPopSizePercent to set
-	 */
-	public void setMinPopSizePercent(int minPopSizePercent) {
-		this.minPopSizePercent = minPopSizePercent;
-	}
-
-	/**
-	 * @return the selectFromPrevGen
-	 */
-	public double getSelectFromPrevGen() {
-		return selectFromPrevGen;
-	}
-
-	/**
-	 * @param selectFromPrevGen
-	 *            the selectFromPrevGen to set
-	 */
-	public void setSelectFromPrevGen(double selectFromPrevGen) {
-		this.selectFromPrevGen = selectFromPrevGen;
-	}
-
-	/**
-	 * @return the keepPopSizeConstant
-	 */
-	public boolean isKeepPopSizeConstant() {
-		return keepPopSizeConstant;
-	}
-
-	/**
-	 * @param keepPopSizeConstant
-	 *            the keepPopSizeConstant to set
-	 */
-	public void setKeepPopSizeConstant(boolean keepPopSizeConstant) {
-		this.keepPopSizeConstant = keepPopSizeConstant;
-	}
-
-	/**
-	 * @return the crossoverRate
-	 */
-	public double getCrossoverRate() {
-		return crossoverRate;
-	}
-
-	/**
-	 * @param crossoverRate
-	 *            the crossoverRate to set
-	 */
-	public void setCrossoverRate(double crossoverRate) {
-		this.crossoverRate = crossoverRate;
-	}
-
-	/**
-	 * @return the mutationRate
-	 */
-	public int getMutationRate() {
-		return mutationRate;
-	}
-
-	/**
 	 * @param mutationRate
 	 *            the mutationRate to set
 	 */
@@ -241,86 +115,6 @@ public class EvolConfiguration {
 	
 	public SoloFitnessEvol getSoloFitnessEvol() {
 		return soloFitnessEvol;
-	}
-
-	public Configuration buildConfiguration() {
-		conf = new Configuration();
-		
-		try {
-			// set the ones according to DefaultConfiguration in jgap
-			conf.setBreeder(new GABreeder());
-			conf.setEventManager(new EventManager());
-			conf.setFitnessEvaluator(new DefaultFitnessEvaluator());
-			conf.setChromosomePool(new ChromosomePool());
-
-			// set the Random Generator
-			if (randomGen.equalsIgnoreCase("Stock")) {
-				conf.setRandomGenerator(new StockRandomGenerator());
-			} else if (randomGen.equalsIgnoreCase("Cauchy")) {
-				// setting a Cauchy Random Gen, with default values TODO, add
-				// parameters
-				conf.setRandomGenerator(new CauchyRandomGenerator());
-			} else if (randomGen.equalsIgnoreCase("Gaussian")) {
-				// the same as before, TODO ... the same as before
-				conf.setRandomGenerator(new GaussianRandomGenerator());
-
-			}
-			else {
-				System.out.println("Setting default Random Generator -- This should never happer!");
-				conf.setRandomGenerator(new StockRandomGenerator());
-			}
-
-			// set the Natural Selector
-			if (naturalSel.equalsIgnoreCase("Best")) {
-				// TODO ... defaults defaults ...
-				conf.addNaturalSelector(new BestChromosomesSelector(conf),
-						executeNaturalBefore);
-			} else if (naturalSel.equalsIgnoreCase("Threshold")) {
-				// TODO let's say ... why 0.5d and not 0.7d ..... ? Well,
-				// because there are no defaults ..
-				conf.addNaturalSelector(new ThresholdSelector(conf, 0.5d),
-						executeNaturalBefore);
-			} else if (naturalSel.equalsIgnoreCase("Tournament")) {
-				// TODO .... guess what ? Hm let's say 30 and 0.5 are the
-				// optimal values. Just a guess
-				conf.addNaturalSelector(new TournamentSelector(conf, 30, 0.5d),
-						executeNaturalBefore);
-			} else if (naturalSel.equalsIgnoreCase("Weighted")) {
-				// TODO yeah, you guessed right. Although this one is ok
-				conf.addNaturalSelector(new WeightedRouletteSelector(conf),
-						executeNaturalBefore);
-			}
-			else {
-				System.out.println("Setting default Best Chromosome Selector -- This should never happer!");
-				conf.addNaturalSelector(new BestChromosomesSelector(conf),
-						executeNaturalBefore);
-			}
-			
-			// set the rest
-			conf.setMinimumPopSizePercent(minPopSizePercent);
-			conf.setSelectFromPrevGen(selectFromPrevGen);
-			conf.setKeepPopulationSizeConstant(keepPopSizeConstant);
-			conf.setPopulationSize(population);
-
-			if (crossoverRate != 0)
-				conf.addGeneticOperator(new CrossoverOperator(conf, crossoverRate));
-
-			if (mutationRate != 0)
-				conf.addGeneticOperator(new MutationOperator(conf, mutationRate));
-
-		} catch (InvalidConfigurationException e) {
-			throw new RuntimeException(
-					"Building Configuration Error ...");
-		}
-		
-		try {
-			conf.setFitnessFunction(soloFitnessEvol);
-		} catch (InvalidConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return conf;
 	}
 
 	public String toString() {

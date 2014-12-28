@@ -19,8 +19,10 @@ package org.evomusic.evoltrio.midi;
 import java.util.ArrayList;
 
 import org.evomusic.evoltrio.core.EvolConfiguration;
+import org.evomusic.evoltrio.core.EvolutionConfigBuilder;
 import org.jgap.Configuration;
 import org.jgap.Gene;
+import org.jgap.InvalidConfigurationException;
 import org.jgap.impl.IntegerGene;
 
 /**
@@ -40,9 +42,9 @@ public class ReverseChromoManipulation {
     private int keyNote;
     private int begginingDuration;
 
-    public ReverseChromoManipulation(String song, EvolConfiguration conf){
+    public ReverseChromoManipulation(String song, EvolConfiguration conf) throws InvalidConfigurationException {
         this.song = song;
-        this.conf = conf.buildConfiguration();
+        this.conf = new EvolutionConfigBuilder(conf).buildConfig();
         
         genes = new ArrayList<Gene>();
     }

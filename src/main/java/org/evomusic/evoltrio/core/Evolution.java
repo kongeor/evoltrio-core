@@ -51,7 +51,7 @@ public class Evolution {
     }
 
     public void setup() throws InvalidConfigurationException {
-    	conf = evolConf.buildConfiguration();
+    	conf = new EvolutionConfigBuilder(evolConf).buildConfig();
     	SampleChromosomeBuilder sampleBuilder = 
     	        new SampleChromosomeBuilder(conf, MusicConfiguration.getInstance());
 
