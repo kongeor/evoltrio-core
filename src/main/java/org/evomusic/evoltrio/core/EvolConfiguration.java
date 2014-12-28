@@ -16,19 +16,15 @@
  */
 package org.evomusic.evoltrio.core;
 
+import org.evomusic.evoltrio.core.util.Inspectable;
 import org.evomusic.evoltrio.fitness.SoloFitnessEvol;
-import org.jgap.Configuration;
 
 /**
  * 
  * @author Kostas Georgiadis
  * @since 0.0.1
  */
-public class EvolConfiguration {
-
-	private Configuration conf;
-
-	public static final int DEFAULT_POP_SIZE = 30;
+public class EvolConfiguration implements Inspectable {
 
 	@Pref(name="Random Generator", help="The random generator to use", type=PrefType.COMBO)
 	@ComboPref(allowedValues={"stock", "cauchy", "gaussian", "weighted"}, resolver=RandomGeneratorResolver.class)
@@ -75,80 +71,30 @@ public class EvolConfiguration {
 	public Integer getMutationRate() { return mutationRate; }
     public void setMutationRate(Integer mutationRate) { this.mutationRate = mutationRate; }
 
+    @Pref(name="Iterations", help="The number of evolution cycles", type=PrefType.NUMERIC)
     private int iterations = 100;
+	public int getIterations() { return iterations; }
+    public void setIterations(int iterations) { this.iterations = iterations; }
 
-	private SoloFitnessEvol soloFitnessEvol;
+    @Pref(name="Population Size", type=PrefType.NUMERIC)
+	private int population = 30;
+	public int getPopulationSize() { return population; }
+	public void setPopulationSize(int population) { this.population = population; }
 
-	private int population = DEFAULT_POP_SIZE;
+
+    private SoloFitnessEvol soloFitnessEvol;
 
 	public EvolConfiguration() {
 		soloFitnessEvol = new SoloFitnessEvol();
-	}
-	
-	public Configuration getConf() {
-		return conf;
-	}
-	
-	public int getPopulationSize() {
-		return population;
-	}
-	
-	public void setPopulationSize(int population) {
-		this.population = population;
-	}
-	
-	public int getIterations() {
-		return iterations;
-	}
-
-	public void setIterations(int iterations) {
-		this.iterations = iterations;
-	}
-
-	/**
-	 * @param mutationRate
-	 *            the mutationRate to set
-	 */
-	public void setMutationRate(int mutationRate) {
-		this.mutationRate = mutationRate;
 	}
 	
 	public SoloFitnessEvol getSoloFitnessEvol() {
 		return soloFitnessEvol;
 	}
 
+	@Override
 	public String toString() {
-		String str = "---------------------------------------------------\n"
-				+ "Evolutionary Settings\n"
-				+ "---------------------------------------------------\n\n"
-				+ "Random Generator : "
-				+ randomGen
-				+ "\n"
-				+ "Natural Selector : "
-				+ naturalSel
-				+ "\n"
-				+ "Execute Natural Selector before GO : "
-				+ executeNaturalBefore
-				+ "\n"
-				+ "Min Population Size Percent : "
-				+ minPopSizePercent
-				+ "\n"
-				+ "Select From previous Generation "
-				+ selectFromPrevGen
-				+ "\n"
-				+ "Keep Population Size Constant : "
-				+ keepPopSizeConstant
-				+ "\n"
-				+ "Crossover Rate : "
-				+ crossoverRate
-				+ "\n"
-				+ "Mutation Rate : "
-				+ mutationRate
-				+ "\n"
-				+ "Population Size : "
-				+ conf.getPopulationSize() + "\n";
-
-		return str;
+	    return inspect();
 	}
 
 }

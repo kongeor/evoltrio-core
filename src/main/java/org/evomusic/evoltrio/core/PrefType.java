@@ -22,5 +22,5 @@ package org.evomusic.evoltrio.core;
  * @since 0.3.0
  */
 public enum PrefType {
-    BOOLEAN, PERCENTAGE, COMBO
+    BOOLEAN, NUMERIC, PERCENTAGE, COMBO
 }
