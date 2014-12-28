@@ -50,35 +50,13 @@ public class Evolution {
         evolConf = new EvolConfiguration();
     }
 
-    public void setup() {
+    public void setup() throws InvalidConfigurationException {
     	conf = evolConf.buildConfiguration();
-        // every note has an interval jump and a duration jump
-    	Gene[] sampleGenes = new Gene[MusicConfiguration.getInstance().getPhraseNotes() * 2];
+    	SampleChromosomeBuilder sampleBuilder = 
+    	        new SampleChromosomeBuilder(conf, MusicConfiguration.getInstance());
 
-        try {
-            for (int i = 0; i < MusicConfiguration.getInstance().getPhraseNotes() * 2; i += 2) {
-                sampleGenes[i] = new IntegerGene(conf,
-                        MusicConfiguration.getInstance().getMaxIntervalJump() * (-1),
-                        MusicConfiguration.getInstance().getMaxIntervalJump());
-                sampleGenes[i + 1] = new IntegerGene(conf,
-                        MusicConfiguration.getInstance().getMaxDurationJump() * (-1),
-                        MusicConfiguration.getInstance().getMaxDurationJump());
-            }
-            IChromosome sampleChromosome = new Chromosome(conf, sampleGenes);
-            conf.setSampleChromosome(sampleChromosome);
-
-        } catch (InvalidConfigurationException e) {
-            System.out.println(e);
-        }
-
-        // set the phrase count
-        //phrases = new Chromosome[MusicConfiguration.getInstance().getChordProgression().length];
-
-        try {
-            population = Genotype.randomInitialGenotype(conf);
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+    	conf.setSampleChromosome(sampleBuilder.createSampleChromosome());
+    	population = Genotype.randomInitialGenotype(conf);
     }
 
     public void evolve() throws Exception {

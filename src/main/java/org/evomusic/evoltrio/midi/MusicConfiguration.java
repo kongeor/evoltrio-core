@@ -382,12 +382,12 @@ public class MusicConfiguration {
 	 *            the phraseNotes to set
 	 */
 	public void setPhraseNotes(int phraseNotes) {
-		if (phraseNotes < 4 || phraseNotes > 128) {
-			System.out
-					.println("MusicConfiguration: Invalid phrase notes value :"
-							+ phraseNotes + ". Setting to default (16).");
-			phraseNotes = 16;
-		}
+//		if (phraseNotes < 4 || phraseNotes > 128) {
+//			System.out
+//					.println("MusicConfiguration: Invalid phrase notes value :"
+//							+ phraseNotes + ". Setting to default (16).");
+//			phraseNotes = 16;
+//		}
 		this.phraseNotes = phraseNotes;
 	}
 
@@ -404,12 +404,12 @@ public class MusicConfiguration {
 	 *            according to the restOffset is needed
 	 */
 	public void setMaxIntervalJump(int maxIntervalJump) {
-		if (maxIntervalJump < 1 || maxIntervalJump > 24) {
-			System.out
-					.println("MusicConfiguration: Invalid maxIntevalJump value :"
-							+ maxIntervalJump + ". Setting to default (5).");
-			maxIntervalJump = 5;
-		}
+//		if (maxIntervalJump < 1 || maxIntervalJump > 24) {
+//			System.out
+//					.println("MusicConfiguration: Invalid maxIntevalJump value :"
+//							+ maxIntervalJump + ". Setting to default (5).");
+//			maxIntervalJump = 5;
+//		}
 		this.maxIntervalJump = maxIntervalJump;
 	}
 
@@ -425,12 +425,12 @@ public class MusicConfiguration {
 	 *            the maxDurationJump to set
 	 */
 	public void setMaxDurationJump(int maxDurationJump) {
-		if (maxDurationJump < 0 || maxDurationJump > MusicConfiguration.getInstance().getActiveDurationList().size()) {
-			System.out
-					.println("MusicConfiguration: Invalid maxDurationJump value :"
-							+ maxDurationJump + ". Setting to default (1).");
-			maxDurationJump = 1;
-		}
+//		if (maxDurationJump < 0 || maxDurationJump > MusicConfiguration.getInstance().getActiveDurationList().size()) {
+//			System.out
+//					.println("MusicConfiguration: Invalid maxDurationJump value :"
+//							+ maxDurationJump + ". Setting to default (1).");
+//			maxDurationJump = 1;
+//		}
 		this.maxDurationJump = maxDurationJump;
 	}
 
