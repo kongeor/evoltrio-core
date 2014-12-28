@@ -1,0 +1,13 @@
+.gradle
+build/
+
+# ignore eclipse related files
+.classpath
+.project
+.settings/
+
+libs/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+/bin/
